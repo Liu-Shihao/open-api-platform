@@ -1,0 +1,54 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+#注意 如果配置了spring.cloud.gateway.discovery.locator.enabled为true 即表示开启自动转发路由的功能
+# 需要Eureka注册中心，开启此配置后，可通过Eureka注册中心注册的服务名通过网关转发
+# 例：User微服务的接口：http://localhost:8083/getUserById?id=3，可通过gateway网关服务请求http://localhost:8081/USER/getUserById?id=3 转发到User微服务
+# 如果User微服务带项目名 则请求网关服务也需要带上项目名：http://localhost:8083/user/getUserById?id=3 =》http://localhost:8081/USER/user/getUserById?id=3
+# 开启了自动转发 则不能配置routes
+      # 跨域配置
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedHeaders: "*"
+            allowedOrigins: "*"
+            allowCredentials: true
+            allowedMethods:
+              - GET
+              - POST
+              - DELETE
+              - PUT
+              - OPTION
+
+      default-filters:
+        # 定义全局默认熔断过滤器
+        - name: Hystrix
+          args:
+            name: fallback
+            fallbackUri: forward:/gatewayfallback
+#      routes:
+#        - id: baidu
+#          uri: https://www.baidu.com/
+#          # 断言
+#          predicates:
+#            - Path=/gateway/baidu/**
+#          filters:
+#            - StripPrefix=2
+#        - id: bilibili
+#          uri: https://www.bilibili.com/
+#          predicates:
+#            - Path=/gateway/bilibili/**
+#          filters:
+#            - StripPrefix=2
+# 注册中心地址
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8082/eureka
