@@ -1,5 +1,6 @@
 package com.lsh.user.controller;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,6 +14,12 @@ import java.util.Map;
  */
 @RestController
 public class UserController {
+    @Value("${server.port}")
+    int port;
+    @Value("${spring.application.name}")
+    String name;
+
+
 
     @GetMapping("getUserById")
     public Map<String,Object> getUserById(String id){
@@ -22,5 +29,10 @@ public class UserController {
         resp.put("age","20");
 //        System.out.println(1/0);
         return resp;
+    }
+
+    @GetMapping("/getPort")
+    public String getPort(){
+        return "name:"+name+"  ;  prot:"+port;
     }
 }

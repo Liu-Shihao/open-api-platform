@@ -2,7 +2,10 @@ server:
   port: 8084
 spring:
   application:
-    name: user
+    name: auth
+  redis:
+    host: 172.16.98.100
+    port: 6379
 eureka:
   client:
     service-url:

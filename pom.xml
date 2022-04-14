@@ -8,6 +8,7 @@
         <module>gateway-service</module>
         <module>eureka-service</module>
         <module>user-service</module>
+        <module>oauth-test</module>
     </modules>
 
     <parent>
