@@ -50,30 +50,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
-//        http.authorizeRequests()
-//                .antMatchers("/oauth/**").permitAll()
-//                .anyRequest().permitAll()//全部允许
-//                .and()
-//                .exceptionHandling()
-//                //设置无权限的处理类
-//                .accessDeniedHandler(gatewayAccessDeniedHandler);
-        http
-                .formLogin()
-                //自定义登录成功的页面地址
-                .successForwardUrl("/login/success")
-                //自定义登出
-                .and()
-                .logout()
-                //登出URL
-                .logoutUrl("/logout")
-                //登出成功后的跳转页面   一般是登录页面
-                .logoutSuccessUrl("/login")
-                .and()
-                .exceptionHandling()
-                //设置无权限的处理类
-                .accessDeniedHandler(gatewayAccessDeniedHandler);
-
-
+        http.authorizeRequests()
+            .antMatchers("/oauth/**").permitAll()
+            .and()
+            .exceptionHandling()
+            //设置无权限的处理类
+            .accessDeniedHandler(gatewayAccessDeniedHandler);
     }
     @Override
     public void configure(WebSecurity web) {

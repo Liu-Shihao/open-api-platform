@@ -51,9 +51,15 @@ public class ResponseData extends HashMap<String, Object> {
         return ResponseData.success(msg,null);
     }
 
+    public static ResponseData success(Object data) {
+        return ResponseData.success("操作成功",data);
+    }
     public static ResponseData success(String msg,Object data) {
         return new ResponseData("0000",msg,data);
     }
+
+
+
     public static ResponseData error() {
         return ResponseData.success("操作失败");
     }

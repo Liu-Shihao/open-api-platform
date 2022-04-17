@@ -30,6 +30,14 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
  * 既然要颁发token，就必须定义token的相关endpoint，以及token如何存取及客户端支持哪些类型的token
  * 既然暴露了这些endpoint，就需要对这些endpoint加上安全约束
  *
+ * 认证端点：
+ * /oauth/authorize 授权端点
+ * /oauth/token     令牌端点
+ * /oauth/confirm_access  用户确认授权提交端点
+ * /oauth/error     授权服务错误信息端点
+ * /oauth/check_token 用于资源服务访问的令牌解析端点
+ * /oauth/token_key  提供公有秘钥的端点，比如使用JWT令牌  采用RSA非对称加密方式
+ *
  */
 @Configuration
 @EnableAuthorizationServer
@@ -63,13 +71,6 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
 
     /**
      * 1.配置客户端详细信息服务  使用JDBC模式，即将ClientDetails信息存储到数据库：
-     * clients的pathMapping()方法用来配置端点的URL链接
-     * /oauth/authorize 授权端点
-     * /oauth/token     令牌端点
-     * /oauth/confirm_access  用户确认授权提交端点
-     * /oauth/error     授权服务错误信息端点
-     * /oauth/check_token 用于资源服务访问的令牌解析端点
-     * /oauth/token_key  提供公有秘钥的端点，比如使用JWT令牌  采用RSA非对称加密方式
      * @param clients
      * @throws Exception
      */

@@ -126,3 +126,54 @@ https://www.baidu.com/#access_token=6c4e14d2-ba58-4505-b512-1027358db1a0&token_t
 }
 ```
 
+# 二、令牌校验  POST请求 
+
+令牌校验端口：http://localhost:8084/oauth/check_token
+
+Form-data 格式
+
+| Key   | Value |
+| ----- | ----- |
+| token | 令牌  |
+
+令牌校验成功返回：
+
+返回信息为客户端的详情信息
+
+```json
+{
+    "aud": [
+        "all"
+    ],
+    "scope": [
+        "ALL"
+    ],
+    "active": true,
+    "exp": 1650183348,
+    "client_id": "firstclient"
+}
+```
+
+令牌校验失败：
+状态码为400
+```
+{
+    "error": "invalid_token",
+    "error_description": "Token was not recognised"
+}
+```
+# 三、请求流程
+
+1. 请求网关申请令牌
+
+   ​	网关转发转发请求到认证服务，颁发令牌
+
+2. 携带令牌请求API
+
+   ​	网关转发请求到认证服务，验证令牌，是否具有该API服务权限，	
+
+   ​	验证通过后允许访问API服务
+
+
+
+

@@ -25,28 +25,32 @@ spring:
               - DELETE
               - PUT
               - OPTION
-      routes:
-        - id: user  # User服务1.0
-          uri: lb://USER/**
-          predicates:
-            - Path=/gateway/user/**
-            - Weight=UserService,5
-          filters:
-            - StripPrefix=2
-        - id: weight # User服务2.0 # 实现灰度发布  Weight断言 定义同一个服务名为UserService，分配权重
-          # 都通过localhost:8081/gateway/user/getPort 访问User服务和User2服务
-          uri: lb://USER2/**
-          predicates:
-            - Path=/gateway/user/**
-            - Weight=UserService,5
-          filters:
-            - StripPrefix=2
+#      routes:
+#        - id: user  # User服务1.0
+#          uri: lb://USER/**
+#          predicates:
+#            - Path=/gateway/user/**
+#            - Weight=UserService,5
+#          filters:
+#            - StripPrefix=2
+#        - id: weight # User服务2.0 # 实现灰度发布  Weight断言 定义同一个服务名为UserService，分配权重
+#          # 都通过localhost:8081/gateway/user/getPort 访问User服务和User2服务
+#          uri: lb://USER2/**
+#          predicates:
+#            - Path=/gateway/user/**
+#            - Weight=UserService,5
+#          filters:
+#            - StripPrefix=2
       default-filters:
         # 定义全局默认熔断过滤器
-#        - name: Hystrix
+        - name: Hystrix
+          args:
+            name: fallback
+            fallbackUri: forward:/gatewayfallback
+#        - name: StripPrefix
 #          args:
-#            name: fallback
-#            fallbackUri: forward:/gatewayfallback
+#            name: parts
+#            value: 1
         # 定义限流过滤器
         - name: RequestRateLimiter
           args:
@@ -67,3 +71,6 @@ eureka:
 #    # 自定义负载均衡策略
 #    NFLoadBalancerRuleClassName: com.lsh.gateway.config.MyLoadBanlanceRule
 
+Authorization:
+  # 令牌校验：POST请求  表单格式
+  checkUrl: http://localhost:8084/oauth/check_token
